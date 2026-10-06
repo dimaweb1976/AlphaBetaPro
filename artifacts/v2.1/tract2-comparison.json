@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "tract": 2,
+  "channels": 1024,
+  "different_channels": 0,
+  "first_different_channel": null,
+  "expected_total": 1185,
+  "actual_total": 1185,
+  "expected_sha256": "136f5d21e22b428b19b8859de222296f02ed9b2c812a9700673855924552240f",
+  "actual_sha256": "136f5d21e22b428b19b8859de222296f02ed9b2c812a9700673855924552240f"
+}
