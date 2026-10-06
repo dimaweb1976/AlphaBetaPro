@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+.vs/
+artifacts/**/*.json
+!artifacts/v2.1/*-comparison.json
+
+# Local research corpus and captured spectra are inputs, not product source.
+amber_search.txt
+docs/*.doc
+docs/*.docx
+docs/*.pdf
+docs/*.odt
+docs/*.asw
