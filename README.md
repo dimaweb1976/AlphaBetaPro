@@ -1,12 +1,15 @@
 # AlphaBetaPro — AMBER integration bootstrap
 
 This directory contains the first C# boundary extracted from the confirmed
-AlphaPRO/Amber2Emulator exchange. It intentionally has no WPF or analysis logic
-yet: protocol correctness is tested before UI and calculations are added.
+AlphaPRO/Amber2Emulator exchange and the first WPF diagnostic measurement
+screen. Protocol access remains isolated from UI and future analysis logic.
 
 ## Projects
 
 - `AlphaBetaPro.AmberProtocol` — framing, CRC, TCP exchange and block spectrum read;
+- `AlphaBetaPro.Core` — application service for connection, measurement commands
+  and typed channel snapshots;
+- `AlphaBetaPro.Wpf` — first two-channel WPF diagnostic screen;
 - `AlphaBetaPro.AmberProbe` — CLI for a real or emulated AMBER endpoint;
 - `AlphaBetaPro.AmberProtocol.Tests` — dependency-free byte-vector and optional
   network tests;
@@ -48,5 +51,19 @@ after this gate should the WPF measurement screen consume the library.
 Current status: v2.1 software acceptance is complete. The solution builds with
 zero warnings and errors; byte vectors, timeout and reconnect tests pass; both
 network tracts pass; and both 1024-channel spectra exactly match the v1 golden
-arrays, totals and SHA-256 values. The next product stage is the WPF diagnostic
-measurement shell.
+arrays, totals and SHA-256 values. This accepted protocol layer is consumed by
+the WPF diagnostic measurement shell below.
+
+## v2.2 first WPF vertical slice
+
+Start Amber2Emulator on `127.0.0.1:50000`, then run:
+
+```powershell
+dotnet run --project .\src\AlphaBetaPro.Wpf -c Release
+```
+
+The screen connects and disconnects from the emulator, displays both tracts,
+executes `CLEAR`, `START`, and `STOP`, and polls status, real/live time, dead
+time, count rate, total counts, and a short spectrum preview. Plotting, ASW
+export, calculation algorithms, and advanced settings are intentionally outside
+this first slice.

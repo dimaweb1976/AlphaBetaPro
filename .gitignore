@@ -1,8 +1,11 @@
 **/bin/
 **/obj/
+publish/
 .vs/
 artifacts/**/*.json
 !artifacts/v2.1/*-comparison.json
+artifacts/**/*.png
+artifacts/**/*.tsv
 
 # Local research corpus and captured spectra are inputs, not product source.
 amber_search.txt
