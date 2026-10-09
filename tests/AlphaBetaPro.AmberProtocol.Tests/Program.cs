@@ -2,6 +2,7 @@ using System.Buffers.Binary;
 using System.Net;
 using System.Net.Sockets;
 using AlphaBetaPro.AmberProtocol;
+using AlphaBetaPro.Core;
 
 var failures = new List<string>();
 var passed = 0;
@@ -22,6 +23,7 @@ if (goldenRoot is not null)
 if (args.Contains("--network", StringComparer.OrdinalIgnoreCase))
 {
     await RunNetworkAsync();
+    await RunAsync("Core measurement service", RunCoreServiceAsync);
 }
 
 Console.WriteLine(failures.Count == 0
@@ -186,6 +188,26 @@ async Task RunNetworkAsync()
     {
         failures.Add($"FAIL network: {error.Message}");
     }
+}
+
+async Task RunCoreServiceAsync()
+{
+    var host = ValueAfter("--host") ?? "127.0.0.1";
+    var port = int.Parse(ValueAfter("--port") ?? "50000");
+    await using IAmberDeviceService service = new AmberDeviceService();
+    await service.ConnectAsync(host, port);
+    var first = await service.ReadChannelAsync(AmberTract.Tract1);
+    var second = await service.ReadChannelAsync(AmberTract.Tract2);
+    Equal(1024, first.ChannelCount);
+    Equal(1024, second.ChannelCount);
+    await service.ClearAsync(AmberTract.Tract1);
+    await service.StartAsync(AmberTract.Tract1);
+    await Task.Delay(1100);
+    await service.StopAsync(AmberTract.Tract1);
+    var measured = await service.ReadChannelAsync(AmberTract.Tract1);
+    if (measured.TotalCounts == 0)
+        throw new InvalidOperationException("Core service returned an empty measurement.");
+    await service.DisconnectAsync();
 }
 
 string? ValueAfter(string option)

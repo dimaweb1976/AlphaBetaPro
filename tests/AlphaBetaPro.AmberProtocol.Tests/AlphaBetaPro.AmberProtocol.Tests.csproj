@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\AlphaBetaPro.AmberProtocol\AlphaBetaPro.AmberProtocol.csproj" />
+    <ProjectReference Include="..\..\src\AlphaBetaPro.Core\AlphaBetaPro.Core.csproj" />
   </ItemGroup>
 </Project>
